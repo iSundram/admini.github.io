@@ -4,98 +4,174 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Admini License Verification</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&display=swap" rel="stylesheet">
+
 <style>
-  body {
-    font-family: 'Syne', sans-serif;
-    background-color: #f5f7fb;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .container {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-  }
-  h1 {
-    color: #6985c0;
-    margin-bottom: 1rem;
-  }
-  input {
-    width: 100%;
-    padding: 0.7rem;
-    border: 2px solid #6985c0;
-    border-radius: 8px;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    outline: none;
-  }
-  button {
-    background-color: #6985c0;
-    color: white;
-    padding: 0.7rem 1.2rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  button:hover {
-    background-color: #5b76b2;
-  }
-  .result {
-    margin-top: 1rem;
-    font-weight: 600;
-  }
+    body {
+        margin: 0;
+        font-family: 'Syne', sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f5f5f5;
+    }
+
+    header {
+        text-align: center;
+        padding: 20px;
+        position: relative;
+    }
+
+    header h1 {
+        display: inline-block;
+        font-size: 2.5rem;
+        color: black;
+        padding: 10px 20px;
+        border: 3px solid transparent;
+        position: relative;
+        animation: borderAnimation 3s infinite;
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            border-top-color: #6985c0;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+        }
+        25% {
+            border-top-color: #6985c0;
+            border-right-color: #6985c0;
+        }
+        50% {
+            border-bottom-color: #6985c0;
+            border-right-color: #6985c0;
+        }
+        75% {
+            border-bottom-color: #6985c0;
+            border-left-color: #6985c0;
+        }
+        100% {
+            border-top-color: #6985c0;
+            border-left-color: #6985c0;
+        }
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .verify-box {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 300px;
+        text-align: center;
+    }
+
+    .verify-box input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-family: inherit;
+    }
+
+    .verify-box button {
+        padding: 10px 20px;
+        background: #6985c0;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .verify-box button:hover {
+        background: #5068a3;
+    }
+
+    #result {
+        margin-top: 15px;
+        font-size: 0.95rem;
+    }
+
+    footer {
+        text-align: center;
+        padding: 15px;
+        font-size: 0.85rem;
+        color: #666;
+        background: #eee;
+    }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Admini License</h1>
-  <p>Enter your license key to verify.</p>
-  <input type="text" id="licenseKey" placeholder="Enter license key" />
-  <button onclick="verifyLicense()">Verify</button>
-  <div class="result" id="result"></div>
-</div>
+<header>
+    <h1>Admini</h1>
+</header>
+
+<main>
+    <div class="verify-box">
+        <h2>License Verification</h2>
+        <input type="text" id="licenseKey" placeholder="Enter your license key" />
+        <button onclick="verifyKey()">Verify</button>
+        <div id="result"></div>
+    </div>
+</main>
+
+<footer>
+    &copy; <span id="year"></span> Admini. All rights reserved.
+</footer>
 
 <script>
-async function verifyLicense() {
-  const key = document.getElementById('licenseKey').value.trim();
-  const resultEl = document.getElementById('result');
-  if (!key) {
-    resultEl.textContent = "Please enter a license key.";
-    resultEl.style.color = "red";
-    return;
-  }
-  resultEl.textContent = "Checking...";
-  resultEl.style.color = "#333";
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-  try {
-    // Replace with your API endpoint for license verification
-    const res = await fetch(`https://api.cp.dev/license/verify?key=${encodeURIComponent(key)}`);
-    const data = await res.json();
+    function verifyKey(keyFromURL = null) {
+        const key = keyFromURL || document.getElementById("licenseKey").value.trim();
+        const resultDiv = document.getElementById("result");
 
-    if (data.valid) {
-      resultEl.textContent = "✅ License is valid!";
-      resultEl.style.color = "green";
-    } else {
-      resultEl.textContent = "❌ License is invalid.";
-      resultEl.style.color = "red";
+        if (!key) {
+            resultDiv.innerHTML = "<span style='color:red'>Please enter a license key.</span>";
+            return;
+        }
+
+        resultDiv.innerHTML = "Verifying...";
+        
+        // Change API endpoint to your real licensing API
+        fetch(`https://api.cp.dev/license/verify?key=${encodeURIComponent(key)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    resultDiv.innerHTML = "<span style='color:green'>✅ License is valid</span>";
+                } else {
+                    resultDiv.innerHTML = "<span style='color:red'>❌ License is invalid</span>";
+                }
+            })
+            .catch(err => {
+                resultDiv.innerHTML = "<span style='color:red'>Error verifying license</span>";
+                console.error(err);
+            });
     }
-  } catch (err) {
-    resultEl.textContent = "Error verifying license.";
-    resultEl.style.color = "red";
-  }
+
+    // Auto-check if ?key= is present
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("key")) {
+        const key = params.get("key");
+        document.getElementById("licenseKey").value = key;
+        verifyKey(key);
+    }
+</script>
+
+</body>
+</html>  }
 }
 </script>
 
