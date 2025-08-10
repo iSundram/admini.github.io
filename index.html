@@ -15,63 +15,88 @@
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        background-color: #f5f5f5;
+        background: #f8f8f8;
     }
 
+    /* HEADER */
     header {
-        text-align: center;
-        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: white;
+        border-bottom: 2px solid #ddd;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        border: 3px solid black;
+        padding: 5px 15px;
+        font-size: 1.8rem;
+        font-weight: bold;
+        background: linear-gradient(270deg, #ff8a00, #e52e71, #00c6ff, #8e2de2);
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: gradientShift 6s ease infinite, sparkle 2s infinite;
         position: relative;
     }
 
-    header h1 {
-        display: inline-block;
-        font-size: 2.5rem;
-        color: black;
-        padding: 10px 20px;
-        border: 3px solid transparent;
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes sparkle {
+        0%, 100% { text-shadow: 0 0 5px #fff, 0 0 10px #ff0; }
+        50% { text-shadow: 0 0 8px #fff, 0 0 15px #0ff; }
+    }
+
+    nav {
+        display: flex;
+        gap: 20px;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
         position: relative;
-        animation: borderAnimation 3s infinite;
     }
 
-    @keyframes borderAnimation {
-        0% {
-            border-top-color: #6985c0;
-            border-right-color: transparent;
-            border-bottom-color: transparent;
-            border-left-color: transparent;
-        }
-        25% {
-            border-top-color: #6985c0;
-            border-right-color: #6985c0;
-        }
-        50% {
-            border-bottom-color: #6985c0;
-            border-right-color: #6985c0;
-        }
-        75% {
-            border-bottom-color: #6985c0;
-            border-left-color: #6985c0;
-        }
-        100% {
-            border-top-color: #6985c0;
-            border-left-color: #6985c0;
-        }
+    nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: black;
+        transition: width 0.3s ease;
     }
 
+    nav a:hover::after {
+        width: 100%;
+    }
+
+    /* MAIN */
     main {
         flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 40px 20px;
     }
 
     .verify-box {
         background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        width: 300px;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        width: 320px;
         text-align: center;
     }
 
@@ -79,23 +104,136 @@
         width: 100%;
         padding: 10px;
         margin: 10px 0;
-        border-radius: 5px;
+        border-radius: 6px;
         border: 1px solid #ccc;
         font-family: inherit;
     }
 
     .verify-box button {
         padding: 10px 20px;
-        background: #6985c0;
+        background: #000;
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 6px;
         cursor: pointer;
         font-family: inherit;
+        font-weight: bold;
     }
 
     .verify-box button:hover {
-        background: #5068a3;
+        background: #444;
+    }
+
+    #result {
+        margin-top: 15px;
+        font-size: 0.95rem;
+    }
+
+    /* FOOTER */
+    footer {
+        background: #111;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    footer::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 20%, transparent 20%);
+        background-size: 50px 50px;
+        animation: movePattern 15s linear infinite;
+    }
+
+    @keyframes movePattern {
+        from { transform: translate(0, 0); }
+        to { transform: translate(50px, 50px); }
+    }
+
+    .footer-text {
+        position: relative;
+        z-index: 2;
+        font-size: 0.9rem;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Admini</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Docs</a>
+        <a href="#">Support</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<main>
+    <div class="verify-box">
+        <h2>License Verification</h2>
+        <input type="text" id="licenseKey" placeholder="Enter your license key" />
+        <button onclick="verifyKey()">Verify</button>
+        <div id="result"></div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-text">
+        &copy; <span id="year"></span> Admini — Innovative Hosting Solutions.  
+        Built with ❤️ for the next generation of control panels.
+    </div>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    let APIKEYLIC = ""; // API key variable
+
+    function verifyKey(keyFromURL = null) {
+        APIKEYLIC = keyFromURL || document.getElementById("licenseKey").value.trim();
+        const resultDiv = document.getElementById("result");
+
+        if (!APIKEYLIC) {
+            resultDiv.innerHTML = "<span style='color:red'>Please enter a license key.</span>";
+            return;
+        }
+
+        resultDiv.innerHTML = "Verifying...";
+
+        // Change API endpoint to your licensing service
+        fetch(`https://api.lenskart.com/license/verify?key=${encodeURIComponent(APIKEYLIC)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    resultDiv.innerHTML = "<span style='color:green'>✅ License is valid</span>";
+                } else {
+                    resultDiv.innerHTML = "<span style='color:red'>❌ License is invalid</span>";
+                }
+            })
+            .catch(err => {
+                resultDiv.innerHTML = "<span style='color:red'>Error verifying license</span>";
+                console.error(err);
+            });
+    }
+
+    // Auto-check ?key= in URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("key")) {
+        const key = params.get("key");
+        document.getElementById("licenseKey").value = key;
+        verifyKey(key);
+    }
+</script>
+
+</body>
+</html>        background: #5068a3;
     }
 
     #result {
