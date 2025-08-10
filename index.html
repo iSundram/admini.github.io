@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admini License Verification</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Syne', sans-serif;
+    background-color: #f5f7fb;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .container {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+  h1 {
+    color: #6985c0;
+    margin-bottom: 1rem;
+  }
+  input {
+    width: 100%;
+    padding: 0.7rem;
+    border: 2px solid #6985c0;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+  }
+  button {
+    background-color: #6985c0;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button:hover {
+    background-color: #5b76b2;
+  }
+  .result {
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Admini License</h1>
+  <p>Enter your license key to verify.</p>
+  <input type="text" id="licenseKey" placeholder="Enter license key" />
+  <button onclick="verifyLicense()">Verify</button>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+async function verifyLicense() {
+  const key = document.getElementById('licenseKey').value.trim();
+  const resultEl = document.getElementById('result');
+  if (!key) {
+    resultEl.textContent = "Please enter a license key.";
+    resultEl.style.color = "red";
+    return;
+  }
+  resultEl.textContent = "Checking...";
+  resultEl.style.color = "#333";
+
+  try {
+    // Replace with your API endpoint for license verification
+    const res = await fetch(`https://api.cp.dev/license/verify?key=${encodeURIComponent(key)}`);
+    const data = await res.json();
+
+    if (data.valid) {
+      resultEl.textContent = "✅ License is valid!";
+      resultEl.style.color = "green";
+    } else {
+      resultEl.textContent = "❌ License is invalid.";
+      resultEl.style.color = "red";
+    }
+  } catch (err) {
+    resultEl.textContent = "Error verifying license.";
+    resultEl.style.color = "red";
+  }
+}
+</script>
+
+</body>
+</html>
