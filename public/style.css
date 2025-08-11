@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 10px 20px;
+    border-bottom: 2px solid #000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-border {
+    border: 3px solid black;
+    padding: 5px 15px;
+    animation: border-animate 2s infinite;
+}
+
+@keyframes border-animate {
+    0% { border-color: black; }
+    50% { border-color: #ffcc00; }
+    100% { border-color: black; }
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    background: linear-gradient(90deg, #000, #555);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black;
+}
+
+main {
+    margin: 30px auto;
+    max-width: 600px;
+}
+
+input {
+    padding: 10px;
+    width: 60%;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #444;
+}
+
+pre {
+    background: #eee;
+    padding: 10px;
+    text-align: left;
+    overflow-x: auto;
+    max-height: 300px;
+}
+
+footer {
+    background: white;
+    padding: 15px;
+    border-top: 2px solid black;
+    margin-top: 30px;
+}
