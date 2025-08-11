@@ -1,35 +1,45 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admini License Verification</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admini — License Verify</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
 <header>
-    <div class="logo-container">
-        <div class="logo-border">
-            <span class="logo-text">Admini</span>
-        </div>
+  <div class="header-left">
+    <div class="logo-border" aria-hidden="true">
+      <div class="logo-gradient">Admini</div>
+      <div class="logo-spark"></div>
     </div>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Docs</a>
-        <a href="#">Support</a>
-    </nav>
+  </div>
+  <nav class="header-right">
+    <a href="#">Home</a>
+    <a href="#">Docs</a>
+    <a href="#">Support</a>
+  </nav>
 </header>
 
 <main>
-    <h1>Verify Your License</h1>
-    <input type="text" id="licenseInput" placeholder="Enter License Key">
-    <button id="verifyBtn">Verify</button>
+  <section class="box">
+    <h1>License Verification</h1>
 
-    <pre id="result"></pre>
+    <div class="form-row">
+      <input id="licenseKey" placeholder="Enter license key (or use ?key=...)" />
+      <button id="verifyBtn">Verify</button>
+    </div>
+
+    <div id="status" class="status">Awaiting input...</div>
+
+    <div id="output" class="output" aria-live="polite"></div>
+  </section>
 </main>
 
 <footer>
-    <p>&copy; 2025 AdminiPanel — Innovative Licensing Solutions</p>
+  <div class="footer-content">
+    <strong>Admini</strong> • Secure Licensing & Hosting Control — built 2025
+  </div>
 </footer>
 
 <script src="script.js"></script>
